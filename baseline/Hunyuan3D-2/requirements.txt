@@ -8,33 +8,33 @@ numpy
 torch
 transformers
 torchvision
-taming-transformers-rom1504
-ConfigArgParse
-ipdb
+#taming-transformers-rom1504
+#ConfigArgParse
+#ipdb
 omegaconf
 
-sentencepiece
+#sentencepiece
 tqdm
 
-Mesh Processing
+# Mesh Processing
 trimesh
 pymeshlab
 pygltflib
 xatlas
-kornia
-facexlib
+#kornia
+#facexlib
 
-Training
+# Training
 accelerate
-pytorch_lightning
-scikit-learn
-scikit-image
+#pytorch_lightning
+#scikit-learn
+#scikit-image
 
-Demo only
+# Demo only
 gradio
 fastapi
 uvicorn
 rembg
 onnxruntime
-gevent
-geventhttpclient
+#gevent
+#geventhttpclient
