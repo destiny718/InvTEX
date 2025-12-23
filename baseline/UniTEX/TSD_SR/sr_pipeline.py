@@ -282,4 +282,4 @@ if __name__ == "__main__":
     image_name = 'projects/test_lucid3/rembg_image.png'
     lr = Image.open(image_name).convert('RGB')
     sr = srpipe(lr)
-    breakpoint()
+    # breakpoint()
