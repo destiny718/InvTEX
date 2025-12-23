@@ -9,8 +9,8 @@ def main():
     base_dir = Path(__file__).resolve().parent
 
     # 目录（按需改成你的实际位置）
-    test_set_dir = base_dir / "test_set"
-    ref_img_dir = base_dir / "reference_images"
+    test_set_dir = base_dir /".." / "test_set"
+    ref_img_dir = base_dir /".." / "reference_images"
     out_dir = base_dir / "output_test_set"
     out_dir.mkdir(parents=True, exist_ok=True)
 
