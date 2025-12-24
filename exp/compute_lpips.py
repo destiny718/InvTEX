@@ -37,7 +37,7 @@ if __name__ == "__main__":
     import os
     import glob
 
-    gen_dir = "data/out"
+    gen_dir = "data/hy"
     gt_dir = "data/ref"
 
 

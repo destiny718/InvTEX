@@ -38,11 +38,34 @@ def clip_t(gen_paths, prompts, device="cuda", batch_size=64):
 
 
 if __name__ == "__main__":
-    gen_paths = ["/data/tianqi/InvTEX/data/hy/hunyuan_case1.png",
-                "/data/tianqi/InvTEX/data/hy/hunyuan_case2.png",
-                "/data/tianqi/InvTEX/data/hy/hunyuan_case3.png",
-                "/data/tianqi/InvTEX/data/hy/hunyuan_case4.png"]
-    prompts = ["The head features a typical tiger stripe pattern, primarily orange-yellow, with black stripes and creamy white areas around the mouth and nose. The eyes are large and bright, and the tip of the nose is pink. The body and limbs are covered with metallic plates in dark gray and gunmetal, with brown leather straps, and are accented with antique bronze details in certain areas.", "a red bag filled with colorful gift boxes. The bag is slightly rounded, and the gift boxes inside appear to have different sizes and colorful wrapping, with bows on some of them. The scene has a simple, clean look with a minimalistic background.", "Stylized human figure with asymmetrical pinkish-purple hair, green and brown rolled-up sleeve shirt with checkerboard collar and spike details, half beige, half purple quilted knee-length skirt, short brown vest, turquoise calf-height boots with pink details, and multiple black, grey, and metallic bracelets.", "a small, vibrant urban scene with two buildings, a road, and some street elements. The buildings have various signs, plants, and a large cat sculpture on the rooftop. The street has utility poles, some construction cones, and a cozy, detailed environment with a mix of architectural styles. The scene has a playful, cartoonish aesthetic."]
+    import os
+    from pathlib import Path
+
+    # 从两个文件夹中读取：
+    # - images_dir: 生成图片所在文件夹（读取所有常见图片后缀）
+    # - prompts_dir: prompt 文本所在文件夹（读取所有 .txt，每个文件内容为对应 prompt）
+    images_dir = Path(os.environ.get("CLIPT_IMAGES_DIR"))
+    prompts_dir = Path(os.environ.get("CLIPT_PROMPTS_DIR"))
+
+    img_exts = {".png", ".jpg", ".jpeg", ".webp", ".bmp"}
+
+    gen_paths = sorted(
+        [str(p) for p in images_dir.iterdir() if p.is_file() and p.suffix.lower() in img_exts],
+        key=lambda s: Path(s).name,
+    )
+
+    prompt_paths = sorted(
+        [p for p in prompts_dir.iterdir() if p.is_file() and p.suffix.lower() == ".txt"],
+        key=lambda p: p.name,
+    )
+    prompts = [p.read_text(encoding="utf-8").strip() for p in prompt_paths]
+
+    if len(gen_paths) != len(prompts):
+        raise ValueError(
+            f"图片数量({len(gen_paths)})与prompt数量({len(prompts)})不一致："
+            f"images_dir={images_dir}, prompts_dir={prompts_dir}"
+        )
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
     m, s = clip_t(gen_paths, prompts, device=device)
     print("CLIP-T mean/std:", m, s)
