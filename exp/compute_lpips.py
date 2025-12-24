@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from PIL import Image
 from torchvision import transforms
+import lpips
 
 
 def _img_lpips_tensor(path, image_size=256):
@@ -16,7 +17,6 @@ def _img_lpips_tensor(path, image_size=256):
 
 @torch.no_grad()
 def lpips_score(gen_paths, gt_paths, device="cuda", net="alex", image_size=256, batch_size=16):
-    import lpips
     loss_fn = lpips.LPIPS(net=net).eval().to(device)
 
     vals = []
@@ -34,8 +34,21 @@ def lpips_score(gen_paths, gt_paths, device="cuda", net="alex", image_size=256, 
 
 
 if __name__ == "__main__":
-    gen_paths = [...]
-    gt_paths = [...]
+    import os
+    import glob
+
+    gen_dir = "data/out"
+    gt_dir = "data/ref"
+
+
+    def list_images(d):
+        files = []
+        files.extend(glob.glob(os.path.join(d, "*.png")))
+        return sorted(files)
+
+    gen_paths = list_images(gen_dir)
+    gt_paths = list_images(gt_dir)
+
     device = "cuda" if torch.cuda.is_available() else "cpu"
     m, s = lpips_score(gen_paths, gt_paths, device=device, net="alex")
     print("LPIPS mean/std:", m, s)
