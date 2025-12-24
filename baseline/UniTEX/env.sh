@@ -1,5 +1,5 @@
-conda create -n unitex python=3.10 --yes
-conda activate unitex
+# conda create -n unitex python=3.10 --yes
+# conda activate unitex
 conda install cudatoolkit=11.8 --yes # check nvcc -V, it should be 11.8
 
 pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu118
