@@ -245,7 +245,7 @@ def bake_texture(
     stable_rel_tol: float = 1e-2,
     # visualization
     save_view_weights: bool = True,
-    view_weights_dir: Optional[str] = None,
+    view_weights_dir: Optional[str] = "tmp_view",
 ):
     """
     Bake texture to a mesh from multiple observations.
@@ -313,7 +313,7 @@ def bake_texture(
         # Where to dump per-view weight visualizations.
         # Default: next to other debug renders.
         if view_weights_dir is None:
-            view_weights_dir = os.path.join('/home/cjh/invtex', 'tmp_steps', 'weights')
+            view_weights_dir = "tmp_view"
         os.makedirs(view_weights_dir, exist_ok=True)
 
         for view_idx, (m, view, projection) in enumerate(
@@ -405,7 +405,7 @@ def bake_texture(
             t = t_up.permute(0, 2, 3, 1).contiguous()
         return torch.nn.Parameter(t)
 
-    base_dir = '/home/cjh/invtex'
+    base_dir = 'tmp_view'
     ren_dir = os.path.join(base_dir, 'tmp_steps')
     os.makedirs(ren_dir, exist_ok=True)
 
@@ -747,26 +747,15 @@ def bake_texture_from_blender_glb(
 
 
 if __name__ == "__main__":
-    # tex, (V, F, UV) = bake_texture_from_blender_glb(
-    #     glb_path="/home/cjh/invtex/tiger_warrior.glb",
-    #     poses_json_path="/home/cjh/TRELLIS/camera_poses.json",
-    #     images_dir="/home/cjh/invtex/frames",
-    #     images_dir_mask="/home/cjh/invtex/mask_frames",
-    #     image_pattern="frame_{frame:04d}.png",
-    #     texture_size=2048,
-    #     lambda_tv=1e-2,
-    #     # near=2.0, far=6.0,
-    #     verbose=True,
-    # )
 
     tex, (V, F, UV) = bake_texture_from_blender_glb(
-        glb_path="/home/cjh/invtex/nezuko.glb",
-        poses_json_path="/home/cjh/invtex/outputs_nezuko/cameras_blender.json",
-        images_dir="/home/cjh/invtex/outputs_nezuko/result",
-        images_dir_mask="/home/cjh/invtex/outputs_nezuko/mask",
+        glb_path="1b28eef9b0d0e7783d0017b1b14c99e3afaa8ee986b45e4fdced506c0b4465d9.glb",
+        poses_json_path="cameras_blender.json",
+        images_dir="outputs_1/result",
+        images_dir_mask="outputs_1/mask",
         image_pattern="frame_{frame:04d}.png",
         mask_pattern="mask_{frame:04d}.png",
-        texture_size=4096,
+        texture_size=1024,
         lambda_tv=4,
         near=0.01, far=1000.0,
         verbose=True,
@@ -775,4 +764,4 @@ if __name__ == "__main__":
 
 # tex 为 np.uint8 的 HxWx3，可保存
 import imageio.v2 as iio
-iio.imwrite("baked_texture_nezuko_new.png", tex)
+iio.imwrite("baked_texture_1.png", tex)

@@ -38,8 +38,8 @@ def clip_t(gen_paths, prompts, device="cuda", batch_size=64):
 
 
 if __name__ == "__main__":
-    gen_paths = [...]
-    prompts = [...]
+    gen_paths = ["baked_texture_new.png"]
+    prompts = ["A stylized, colorful underwater coral reef with a geometric grey rock base featuring a green cactus-like coral at the top, beige branching coral, orange tube coral, red pebble coral, green polyp coral, yellow fan coral, light purple lichen coral, pink coral, blue anemones, red coral, and blue bubble coral."]
     device = "cuda" if torch.cuda.is_available() else "cpu"
     m, s = clip_t(gen_paths, prompts, device=device)
     print("CLIP-T mean/std:", m, s)
